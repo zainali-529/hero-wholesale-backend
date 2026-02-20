@@ -1,0 +1,163 @@
+{
+	"info": {
+		"_postman_id": "wholesale-site-banners-collection",
+		"name": "Wholesale Site Banners",
+		"description": "API collection for Wholesale Site Banner Management (CRUD with Cloudinary integration)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get All Banners",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/banners",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Banner",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": [],
+							"description": "Image file to upload"
+						},
+						{
+							"key": "title",
+							"value": "New Summer Collection",
+							"type": "text",
+							"description": "Title of the banner"
+						},
+						{
+							"key": "link",
+							"value": "/collections/summer",
+							"type": "text",
+							"description": "Link URL where banner redirects"
+						},
+						{
+							"key": "isActive",
+							"value": "true",
+							"type": "text",
+							"description": "Whether the banner is active"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/banners",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Banner",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": [],
+							"description": "New image file (optional, will replace old one)"
+						},
+						{
+							"key": "title",
+							"value": "Updated Summer Collection",
+							"type": "text",
+							"description": "Updated title"
+						},
+						{
+							"key": "link",
+							"value": "/collections/summer-sale",
+							"type": "text",
+							"description": "Updated link"
+						},
+						{
+							"key": "isActive",
+							"value": "false",
+							"type": "text",
+							"description": "Updated status"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/banners/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "REPLACE_WITH_BANNER_ID",
+							"description": "ID of the banner to update"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Banner",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/api/banners/:id",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"banners",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "REPLACE_WITH_BANNER_ID",
+							"description": "ID of the banner to delete"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5001",
+			"type": "string"
+		}
+	]
+}
