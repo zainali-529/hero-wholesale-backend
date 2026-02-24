@@ -12,6 +12,8 @@ const getProducts = async (req, res) => {
     const pageSize = 10;
     const page = Number(req.query.pageNumber) || 1;
 
+    console.log('Query Params:', req.query); // Debug logging
+
     const keyword = req.query.keyword
       ? {
           title: {
@@ -24,8 +26,20 @@ const getProducts = async (req, res) => {
     // Filter by category if provided
     const categoryFilter = req.query.category ? { category: req.query.category } : {};
 
-    const count = await Product.countDocuments({ ...keyword, ...categoryFilter });
-    const products = await Product.find({ ...keyword, ...categoryFilter })
+    // Filter by offer of the day if provided
+    let offerFilter = {};
+    if (req.query.isOfferOfDay === 'true') {
+      offerFilter = { isOfferOfDay: true };
+    }
+
+    // Filter by featured if provided
+    let featuredFilter = {};
+    if (req.query.isFeatured === 'true') {
+      featuredFilter = { isFeatured: true };
+    }
+
+    const count = await Product.countDocuments({ ...keyword, ...categoryFilter, ...offerFilter, ...featuredFilter });
+    const products = await Product.find({ ...keyword, ...categoryFilter, ...offerFilter, ...featuredFilter })
       .populate('category', 'name')
       .limit(pageSize)
       .skip(pageSize * (page - 1))
@@ -87,6 +101,8 @@ const createProduct = async (req, res) => {
       stock: Number(req.body.stock || 0),
       minOrderQuantity: Number(req.body.minOrderQuantity || 1),
       isActive: req.body.isActive === 'true',
+      isOfferOfDay: req.body.isOfferOfDay === 'true',
+      isFeatured: req.body.isFeatured === 'true',
     });
 
     const createdProduct = await product.save();
@@ -137,6 +153,8 @@ const updateProduct = async (req, res) => {
     if (req.body.stock) product.stock = Number(req.body.stock);
     if (req.body.minOrderQuantity) product.minOrderQuantity = Number(req.body.minOrderQuantity);
     if (req.body.isActive !== undefined) product.isActive = req.body.isActive === 'true';
+    if (req.body.isOfferOfDay !== undefined) product.isOfferOfDay = req.body.isOfferOfDay === 'true';
+    if (req.body.isFeatured !== undefined) product.isFeatured = req.body.isFeatured === 'true';
 
     const updatedProduct = await product.save();
     res.json(updatedProduct);
